@@ -1,0 +1,42 @@
+services:
+  db:
+    container_name: kiwi_db
+    image: mariadb:10.11
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: kiwi
+      MARIADB_DATABASE: kiwi
+      MARIADB_USER: kiwi
+      MARIADB_PASSWORD: kiwi
+      MARIADB_AUTO_UPGRADE: "1"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  web:
+    container_name: kiwi_web
+    image: kiwitcms/kiwi:latest
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      # 8080 only issues a 301 to HTTPS; the app is served on 8443.
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      - uploads:/Kiwi/uploads
+    environment:
+      KIWI_DB_HOST: db
+      KIWI_DB_PORT: 3306
+      KIWI_DB_NAME: kiwi
+      KIWI_DB_USER: kiwi
+      KIWI_DB_PASSWORD: kiwi
+
+volumes:
+  db_data:
+  uploads:
