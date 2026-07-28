@@ -1,165 +1,247 @@
-# Kiwi TCMS — Guión de Demo en Vivo (10–15 minutos, 5 expositores)
-**Grupo 4 — Tipo de herramienta: Gestión de pruebas**
+### Kiwi TCMS — Live Demo Script (10–15 minutes, 5 presenters)
 
-Indicaciones escénicas en *[corchetes]*. Texto hablado en texto plano.
-**E1** a **E5** = los cinco expositores, en orden.
+**Group 4 — Tool Type: Test Management**
 
 ---
 
-## Glosario de conceptos técnicos
+# Technical Glossary
 
-Antes de empezar, estos son los términos que usaremos y su significado:
+Before we begin, here are the technical terms we will use during the presentation.
 
-| Término | Qué significa |
-|---|---|
-| **Build** (compilación) | Una versión específica del software que se construyó para probar. Ejemplo: "build-45" es la versión 45 del producto. Cada vez que los desarrolladores cambian código, se genera un build nuevo que hay que probar. |
-| **Test Case** (caso de prueba) | Un escenario que se va a verificar. Tiene pasos, resultado esperado y prioridad. Ejemplo: "login con contraseña válida devuelve token". |
-| **Test Plan** (plan de pruebas) | Un conjunto de casos agrupados bajo una estrategia: qué se prueba, contra qué versión, y con qué criterios de salida. |
-| **Test Run** (carrera de pruebas) | Una ejecución concreta de los casos de un plan, contra un build específico, con resultados registrados. Es el "evento" de testing. |
-| **Test Execution** (ejecución de prueba) | Cada fila dentro de un Test Run: un caso, un resultado (PASSED/FAILED/BLOCKED), quién lo ejecutó, y contra qué build. |
-| **Gestión de pruebas** | No es ejecutar tests — es **controlar el proceso**: qué se probó, quién lo hizo, contra qué versión, qué falló, y dónde queda la evidencia. |
-
----
-
-## BLOQUE 1 — E1 — El problema que resuelve (0:00 → 2:00)
-
-*[Slide: título del grupo y herramienta]*
-
-Buenos días. Somos el Grupo 4. Nuestra herramienta es **Kiwi TCMS**, un sistema de gestión de pruebas de código abierto.
-
-*[Slide: imagen de un spreadsheet con una X roja]*
-
-Primero, el problema. Imaginen un equipo de cinco testers, dos versiones del producto y cuatrocientos casos de prueba. Para decidir si se puede liberar, necesitan responder cuatro preguntas: ¿qué casos están en alcance para esta versión? ¿Quién es responsable de cada uno? ¿Contra **qué build** se ejecutaron? Y cuando uno falló, ¿dónde queda la evidencia y el defecto asociado?
-
-La mayoría de equipos responde eso con un spreadsheet. Pero un spreadsheet no versiona, no puede vincular un fallo con un bug, no puede decir quién cambió un resultado esperado el martes pasado, y no puede mezclar resultados manuales con automatizados.
-
-Esa brecha es exactamente lo que una herramienta de gestión de pruebas llena. Kiwi TCMS no ejecuta tests — **los organiza y da trazabilidad**.
+| Term                | Meaning                                                                                                                                                                                                                        |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Build**           | A specific version of the software that was built for testing. For example, **build-45** is version 45 of the product. Every time developers make changes and compile the code, a new build is created and needs to be tested. |
+| **Test Case**       | A testing scenario that describes what should be verified. It includes steps, an expected result, and a priority. Example: *"Login with a valid password returns a token."*                                                    |
+| **Test Plan**       | A collection of test cases organized under a testing strategy. It defines what will be tested, against which version, and the exit criteria.                                                                                   |
+| **Test Run**        | A specific execution of the test cases in a test plan against a particular build, with the results recorded. It represents the actual testing event.                                                                           |
+| **Test Execution**  | One execution record inside a Test Run. It contains a test case, its result (PASSED, FAILED, BLOCKED), the tester who executed it, and the build that was tested.                                                              |
+| **Test Management** | Test management is not about running tests. It is about organizing the testing process: knowing what was tested, who tested it, which build was tested, what failed, and where the evidence is stored.                         |
 
 ---
 
-## BLOQUE 2 — E2 — La jerarquía del producto (2:00 → 4:30)
+# BLOCK 1 — Presenter 1 — The Problem Kiwi TCMS Solves (0:00 → 2:00)
 
-*[Abrir en navegador: https://localhost:8443, ya logueado]*
+*[Slide: Group title and tool name]*
 
-En Kiwi, todo empieza por declarar **qué se está probando**. La estructura es jerárquica, y es importante entenderla antes de navegar la herramienta.
+Good morning. We are **Group 4**, and today we will present **Kiwi TCMS**, an open-source test management system.
 
-**Product** (producto): es el software que se testea. Nosotros tenemos un "Solinal Demo Shop", una tienda web pequeña.
+*[Slide: Spreadsheet image with a red X]*
 
-**Version** (versión): cada producto tiene versiones. La nuestra es la versión 1.2. Cuando se lance la 1.3, se trabaja con una versión nueva.
+Before looking at the tool, let's understand the problem it solves.
 
-**Build** (compilación): aquí es donde se pone concreto. Un build es una **construcción específica del software** — cada vez que los desarrolladores hacen cambios y compilan el código, el resultado es un build. Nosotros tenemos "build-45". Testear contra un build específico significa que sabemos exactamente qué versión del código produjo el resultado.
+Imagine a team with five testers, two software versions, and four hundred test cases. Before releasing the software, the team needs to answer four important questions.
 
-*[Abrir Testing → Products → Solinal Demo Shop → versión 1.2 → build-45]*
+Which test cases are included in this release? Who is responsible for each one? Which build were they executed against? And if a test failed, where is the evidence and the related bug report?
 
-Esto no es papelera — es lo que después nos permite decir que un test **pasó en el build 45**, que es la diferencia entre un resultado suelto y un resultado **trazable**.
+Many teams try to manage all of this with spreadsheets. However, spreadsheets have important limitations. They cannot track changes over time, they cannot link failed tests to bug reports, they cannot show who modified a test case, and they cannot combine manual and automated test results in one place.
 
-*[Abrir Testing → Test Plans → "Regression - Authentication 1.2"]*
+This is exactly the problem that a test management tool solves.
 
-El **Test Plan** es la estrategia: qué casos entran, contra qué versión, y cuáles son los criterios de salida. Por ejemplo: "todos los casos P1 deben pasar en el build de release". Cuando llegue la versión 1.3, se clona el plan en vez de reescribirlo.
-
----
-
-## BLOQUE 3 — E3 — Crear y revisar casos de prueba (4:30 → 7:00)
-
-*[Dentro del plan, mostrar la lista de casos]*
-
-Un **Test Case** es un activo reutilizable: precondiciones, pasos, resultado esperado, y un campo que lo vincula al test automatizado que lo cubre. Note que existe **independientemente de cualquier ejecución** — el mismo caso puede vivir en el plan de smoke, en el de regresión, y en tres versiones a la vez.
-
-Cada columna de gestión es una decisión: **prioridad** (P1 = crítico, P2 = importante), **categoría**, **estado de automatización**, **tester asignado**. Así es como un lead decide qué correr cuando quedan dos días y cuatrocientos casos — filtra por P1 y ejecuta esos primero.
-
-*[Abrir el caso "Login with an expired password is rejected"]*
-
-Muestren los pasos, el resultado esperado, y el campo `script` que lo conecta al test automatizado.
-
-*[Crear UN caso en vivo — pegar desde docs/snippets.md]*
-
-Resumen: *"Session expires after 30 minutes of inactivity"*. Categoría Functional, prioridad P2, estado Confirmed. Pasos y resultado esperado — pegar. Guardar. Agregarlo al plan de regresión.
-
-*[Mostrar la pestaña Historial del caso]*
-
-Un detalle clave para gestión: **cada cambio está versionado**. Kiwi registra quién cambió qué campo y cuándo. En un proyecto auditado, ese historial **es** un entregable.
+Kiwi TCMS does **not** execute tests. Instead, it **organizes the testing process and provides full traceability**.
 
 ---
 
-## BLOQUE 4 — E4 — Ejecución manual y defecto (7:00 → 9:30)
+# BLOCK 2 — Presenter 2 — Understanding the Product Structure (2:00 → 4:30)
 
-*[Abrir Testing → Test Runs → "Manual regression - build-45"]*
+*[Open Kiwi TCMS in the browser at https://localhost:8443, already logged in]*
 
-Un plan es una *definición*. Un **Test Run** es un *evento*: toma los casos de un plan y los ancla a un build, un manager y un tester asignado.
+In Kiwi, everything starts by defining **what is being tested**.
 
-*[Señalar las filas de ejecución]*
+The structure is hierarchical, and understanding it makes the rest of the tool much easier to follow.
 
-Dentro del run están las **Test Executions** — una fila por caso, cada una con su estado: IDLE, RUNNING, PASSED, FAILED, BLOCKED. Un mismo caso puede tener veinte resultados diferentes en veinte runs, y cada uno queda registrado con su build y fecha.
+First, we have the **Product**. The product represents the software being tested. In our example, we have **Solinal Demo Shop**, a small online store.
 
-Esa separación entre **caso** y **ejecución** es la idea central de la gestión de pruebas, y es exactamente lo que un spreadsheet no puede representar.
+Each product has one or more **Versions**. Our current version is **1.2**. When version 1.3 is released, we simply create a new version instead of replacing the old one.
 
-*[Ejecutar: marcar tres ejecuciones como PASSED]*
+Next comes the **Build**.
 
-Yo soy el tester asignado, ejecuto y registro. Pasó. Pasó. Pasó.
+A build is a specific compiled version of the software. Every time developers make changes and compile the application, they produce a new build.
 
-*[Marcar "Login with an expired password is rejected" como FAILED, agregar comentario]*
+In our demo, we are testing **build-45**.
 
-Este falla: la contraseña tenía noventa y un días de antigüedad y el sistema aún dejó entrar al usuario. Marco el estado como **failed** y agrego un comentario con lo que observé. Ese comentario es la cadena de evidencia.
+Testing against a specific build means we always know exactly which version of the code produced the testing results.
 
-*[Abrir la pestaña Bugs de la ejecución y adjuntar el defecto]*
+*[Point to the Test Plan information with the mouse]*
 
-Kiwi se integra con rastreadores de issues — GitHub, JIRA, Bugzilla, Redmine — para que una ejecución fallida pueda abrir un issue pre-llenado con el caso, sus pasos y el build, y mantenerlo vinculado. Aquí está ese defecto, permanentemente adjunto a esta ejecución.
+This information is very important because later we can clearly say that a test **passed on build-45**. That is what makes the result traceable.
 
-*[Mostrar la barra de progreso del run]*
+Finally, we have the **Test Plan**.
 
-Y arriba del run: cuántos pasaron, fallaron, están bloqueados o aún esperan. Ese es el número de "¿estamos listos para release?" que un manager realmente pregunta.
+A Test Plan defines the testing strategy. It specifies which test cases belong to the plan, which product version they are for, and the exit criteria.
 
----
+For example, our exit criterion could be that all **Priority 1** test cases must pass before the release.
 
-## BLOQUE 5 — E5 — Automatización, reportes y cierre (9:30 → 12:00)
-
-*[Terminal al lado del navegador]*
-
-Todo lo anterior fue manual. Pero la mayoría de equipos también tiene tests automatizados, y una herramienta de gestión que los ignora vuelve a partir la foto en dos.
-
-Kiwi resuelve eso con una **API JSON-RPC**, un cliente Python oficial, y plugins para pytest, JUnit XML y TAP. Nosotros escribimos un importador (~100 líneas) para mostrar la API directamente.
-
-*[Correr: `.venv/bin/python -m pytest --junitxml=junit.xml`]*
-
-Esta es la suite automatizada del mismo producto. Cuatro tests pasan, uno falla — el mismo defecto de contraseña expirada, dejado intencionalmente en el código.
-
-*[Correr: `.venv/bin/python automation/report_results.py junit.xml`]*
-
-Este script envía el reporte a Kiwi a través de la API.
-
-*[Refrescar en el navegador la pestaña de Test Runs]*
-
-Miren qué pasó en el servidor: **se creó un nuevo Test Run automáticamente**, en el mismo producto, plan y build, con una ejecución por caso y el estado real de cada uno. Sin entrada manual de datos, y cada test automatizado vinculado al caso de prueba que lo describe.
-
-*[Abrir Telemetry → Testing status matrix, luego Execution trends]*
-
-Esto nos lleva a reportes. Bajo **Telemetry**, Kiwi trae dashboards diseñados para preguntas de gestión: la *testing status matrix*, que muestra qué casos pasan o fallan por build; *execution trends* en el tiempo; y desgloses por tester, prioridad y componente. Aquí se nota que un componente falla repetidamente en tres builds — un patrón invisible dentro de cualquier resultado individual.
-
-*[Slide final: beneficios, límites, repo]*
-
-Para resumir:
-
-**Beneficios** como herramienta de gestión de pruebas:
-- **Gratis y self-hosted** — TestRail y Zephyr cobran por usuario; Kiwi es GPL y los datos quedan en tu infraestructura.
-- **Fuente única de verdad** para resultados manuales y automatizados.
-- **Trazabilidad** de plan a caso a run a defecto, con historial completo de cambios.
-- **Proceso estructurado out of the box** — roles, asignaciones, notificaciones.
-
-**Límites**: la interfaz se ve anticuada, alguien tiene que administrar y respaldar la instancia, y el soporte comunitario es best-effort.
-
-Todo lo que vieron es reproducible. Nuestro repositorio público tiene el Docker Compose, el script seed, la suite pytest, el importador de resultados y un README que los lleva a este estado exacto.
-
-Cierre: las otras herramientas de este curso hacen que los tests **corran**. Kiwi TCMS hace que la práctica de testing sea **auditable** — convierte un montón de resultados en una respuesta defensible a "¿se puede liberar este build?".
-
-Gracias. Preguntas.
+When version 1.3 becomes available, we can simply clone this plan instead of creating everything again.
 
 ---
 
-## Banco de respuestas para preguntas (30–60 s cada una)
+# BLOCK 3 — Presenter 3 — Creating and Reviewing Test Cases (4:30 → 7:00)
 
-- **"¿Por qué no Jira con Xray o Zephyr?"** — Son plugins de pago, por usuario. Kiwi es independiente y gratuito, y se integra con Jira como rastreador de issues sin requerirlo.
-- **"¿Ejecuta los tests?"** — No, y ese es el punto. La ejecución viene de testers o de CI; los resultados fluyen por la API o los plugins.
-- **"¿Trazabilidad de requisitos?"** — Los casos llevan una referencia a requisitos, y la estructura plan-por-versión da cobertura por release.
-- **"¿Cómo escala?"** — Django con base de datos relacional; instancias públicas manejan decenas de miles de casos. El límite real es la disciplina de proceso, no la herramienta.
-- **"¿Qué esfuerzo de adopción?"** — Menos de un día para la instancia y configuración del producto. El costo real es escribir la biblioteca de casos, que se paga con cualquier herramienta.
-- **"¿Se conecta a CI?"** — Sí: nuestro importador es ~100 líneas contra la API, y existen plugins oficiales para pytest, JUnit XML y TAP.
+*[Inside the Test Plan, show the list of test cases]*
+
+Now let's look at the **Test Cases**.
+
+A Test Case is a reusable testing asset. It contains the preconditions, the test steps, the expected result, and it can also be linked to an automated test.
+
+An important point is that a Test Case exists independently from any execution.
+
+The same test case can belong to different test plans, such as a smoke test plan and a regression test plan, and it can also be reused across multiple software versions.
+
+Each management field helps organize the testing process.
+
+For example, **Priority** tells us which tests are the most critical. A Priority 1 test is more important than a Priority 2 test.
+
+We also have categories and assigned testers.
+
+This allows a test lead to quickly filter the most critical test cases when there is limited time before a release.
+
+*[Open "Login with an expired password is rejected"]*
+
+Here we can see the test steps and the expected result.
+
+Now we will create a new test case.
+
+The summary is **Session expires after 30 minutes of inactivity**.
+
+We select the product **Solinal Demo Shop**, choose the default category, keep the status as **Confirmed**, set the priority to **P2**, and leave automation disabled.
+
+Then we enter the following information:
+
+> **Preconditions:** A user with an active session.
+>
+> 1. Log in and stay idle for 31 minutes.
+> 2. Trigger any authenticated action.
+>
+> **Expected Result:** The session is rejected and the user is redirected to the login screen.
+
+We save the changes and manually add the new test case to our Test Plan.
+
+---
+
+# BLOCK 4 — Presenter 4 — Manual Execution and Bug Tracking (7:00 → 9:30)
+
+*[Open Testing → Test Runs → "Manual regression - build-45"]*
+
+A Test Plan is only a definition.
+
+A **Test Run** is the actual testing event.
+
+It takes the test cases from a plan and executes them against a specific build with assigned testers.
+
+*[Point to the execution rows]*
+
+Inside the Test Run, we have the **Test Executions**.
+
+Each row represents one execution of one test case.
+
+Every execution has its own status, such as **Idle**, **Running**, **Passed**, **Failed**, or **Blocked**.
+
+The same Test Case can appear in many Test Runs, and each execution keeps its own result, build, and execution date.
+
+This separation between **Test Case** and **Test Execution** is one of the key ideas of test management, and it is something that spreadsheets cannot represent well.
+
+*[Mark three executions as PASSED]*
+
+As the assigned tester, I execute these test cases and record the results.
+
+This one passed.
+
+This one passed.
+
+And this one also passed.
+
+*[Mark "Login with an expired password is rejected" as FAILED and add the comment]*
+
+Now let's suppose this test fails.
+
+We add the following comment:
+
+> Password was 91 days old (max age is 90) and login still succeeded. No "password expired" error was shown. Reproduced on build-45.
+
+Then we mark the execution as **Failed**.
+
+*[Open the Bugs tab and link the defect]*
+
+Kiwi TCMS integrates with issue tracking systems such as **JIRA** and **Bugzilla**.
+
+A failed execution can be linked directly to a bug report, keeping the test case, the testing steps, and the build connected to the issue.
+
+*[Show the progress bar]*
+
+At the top of the Test Run, we can immediately see how many tests passed, failed, are blocked, or are still waiting to be executed.
+
+This is exactly the information a project manager needs when deciding whether the software is ready for release.
+
+---
+
+# BLOCK 5 — Presenter 5 — Automation, Reports, and Conclusion (9:30 → 12:00)
+
+*[Open the terminal next to the browser]*
+
+Everything we have shown so far was done manually.
+
+However, most software projects also use automated tests, and a good test management tool should support them as well.
+
+Kiwi TCMS provides a **JSON-RPC API**, an official **Python client**, and plugins for **pytest**, **JUnit XML**, and **TAP**.
+
+For this demo, we wrote a small importer of about one hundred lines to demonstrate how the API works.
+
+*[Run `python -m pytest --junitxml=junit.xml`]*
+
+Here we execute the automated test suite for the same application.
+
+Four tests pass, and one test fails.
+
+The failed test is the same expired password defect that we intentionally left in the application.
+
+*[Run `python automation/report_results.py junit.xml`]*
+
+This script sends the test results to Kiwi TCMS through its API.
+
+*[Refresh the Test Runs page]*
+
+Now look at what happened.
+
+A **new Test Run was created automatically**.
+
+It belongs to the same product, test plan, and build, but it was generated entirely from the automated test results.
+
+Each automated test is linked to its corresponding Test Case, and every execution shows its real result without any manual data entry.
+
+*[Open Telemetry → Testing Status Matrix, then Execution Trends]*
+
+Finally, Kiwi TCMS also includes reporting dashboards under the **Telemetry** section.
+
+The **Testing Status Matrix** shows which test cases passed or failed for each build.
+
+The **Execution Trends** report shows testing progress over time.
+
+There are also reports grouped by priority and component.
+
+*[Final slide: Benefits, Limitations, Repository]*
+
+To summarize, Kiwi TCMS offers several advantages as a test management tool.
+
+It is **free and self-hosted**, unlike tools such as **TestRail** or **Zephyr**, which require paid licenses.
+
+It provides a **single source of truth** for both manual and automated testing results.
+
+It offers complete **traceability** from the test plan, to the test case, to the test execution, and finally to the related defect.
+
+It also provides a structured testing workflow with user roles, assignments, and notifications already built in.
+
+Of course, it also has some limitations.
+
+Its user interface looks somewhat outdated, the server must be maintained by your own team, and community support depends on volunteers.
+
+Everything we demonstrated today can be reproduced.
+
+Our public repository includes the Docker Compose configuration, the seed script, the pytest test suite, the results importer, and a README with all the instructions needed to recreate this environment.
+
+To conclude, many testing tools focus on **running tests**.
+
+Kiwi TCMS focuses on **managing the testing process**.
+
+It transforms individual test results into organized, traceable information that helps answer one of the most important questions in software development:
+
+**Is this build ready for release?**
